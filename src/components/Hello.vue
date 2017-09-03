@@ -29,7 +29,10 @@
       <tbody>
       <tr v-for="(row, rowId) in tableByRow">
         <td v-for="cell in row">
-          <input v-model="cell.value.v" v-bind:class="cell.type">
+          <input v-model="cell.value.v"
+                 v-bind:class="[cell.type, {invalid: !cell.display.correct}]"
+                 v-bind:title="cell.display.errorMessage"
+                 v-bind:placeholder="placeholder(cell.type)">
         </td>
         <td>
           <button v-on:click="removeRow(rowId)">
@@ -121,6 +124,13 @@
           type: 'object',
           values: newValues
         })
+      },
+      placeholder: function (type) {
+        if (type === 'object' || type === 'float64') {
+          return 'NaN'
+        } else {
+          return ''
+        }
       }
     }
   }
@@ -157,6 +167,10 @@ a {
 .object {
   color: olive;
   font-style: italic;
+}
+
+.invalid {
+  background-color: palevioletred;
 }
 
 #int {
