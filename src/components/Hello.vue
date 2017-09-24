@@ -1,54 +1,68 @@
 <template>
-  <div class="hello">
 
-    <table>
-      <thead>
-      <tr>
-        <th v-for="(e, idx) in table.columns">
-          <button v-on:click="removeColumn(idx)">
-            --
-          </button></th>
-      </tr>
-      <tr>
-        <th v-for="column in table.columns">
+  <div class="topContainer">
+    <div class="sidebarContainer">
+      <ul>
+        <li>1</li>
+        <li>2</li>
+        <li>3</li>
+      </ul>
+    </div>
+    <div class="centerContainer">
 
-          <select v-model="column.type">
-            <option>float64</option>
-            <option>int64</option>
-            <option>bool</option>
-            <option>object</option>
-          </select>
-        </th>
-      </tr>
-      <tr>
-        <th v-for="column in table.columns">
-          <input v-model="column.name" class="columnName">
-        </th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr v-for="(row, rowId) in tableByRow">
-        <td v-for="cell in row">
-          <input v-model="cell.value.v"
-                 v-bind:class="[cell.type, {invalid: !cell.display.correct}]"
-                 v-bind:title="cell.display.errorMessage"
-                 v-bind:placeholder="placeholder(cell.type)">
-        </td>
-        <td>
-          <button v-on:click="removeRow(rowId)">
-            --
-          </button>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+      <div class="hello">
+        <table class="dataframe">
+          <tbody>
+          <tr>
+            <td v-for="(e, idx) in table.columns"
+                class="removeButtonCell">
+              <button v-on:click="removeColumn(idx)"
+                      class="removeButton">
+                --
+              </button>
+            </td>
+          </tr>
+          <tr>
+            <td v-for="column in table.columns">
+              <select v-model="column.type">
+                <option>float64</option>
+                <option>int64</option>
+                <option>bool</option>
+                <option>object</option>
+              </select>
+            </td>
+          </tr>
+          <tr>
+            <td v-for="column in table.columns"
+                class="columnNameCell">
+              <input v-model="column.name" class="columnName">
+            </td>
+          </tr>
+          <tr v-for="(row, rowId) in tableByRow">
+            <td v-for="cell in row">
+              <input v-model="cell.value.v"
+                     v-bind:class="[cell.type, {invalid: !cell.display.correct}]"
+                     v-bind:title="cell.display.errorMessage"
+                     v-bind:placeholder="placeholder(cell.type)">
+            </td>
+            <td class="removeButtonCell">
+              <button v-on:click="removeRow(rowId)"
+                      class="removeButton">
+                --
+              </button>
+            </td>
+          </tr>
+          </tbody>
+        </table>
 
-    <button v-on:click="addColumn()">add column</button>
-    <button v-on:click="addRow()">add row</button>
+        <button v-on:click="addColumn()">add column</button>
+        <button v-on:click="addRow()">add row</button>
+      </div>
 
-
-
+    </div>
   </div>
+
+
 </template>
 
 <script>
@@ -120,7 +134,7 @@
         }
 
         this.table.columns.push({
-          name: 'new-column',
+          name: 'c' + this.table.columns.length,
           type: 'object',
           values: newValues
         })
@@ -138,6 +152,23 @@
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+
+.topContainer {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.sidebarContainer {
+  border: solid 1px olivedrab;
+  flex: initial;
+  width: 300px;
+}
+
+.centerContainer {
+  border: solid 1px olivedrab;
+  flex: 1;
+}
+
 h1, h2 {
   font-weight: normal;
 }
@@ -169,8 +200,19 @@ a {
   font-style: italic;
 }
 
-.invalid {
-  background-color: palevioletred;
+table.dataframe button.removeButton {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background-color: white;
+}
+
+table.dataframe input.invalid {
+  background-color: lightpink;
+}
+
+table.dataframe tr:nth-child(odd) input.invalid {
+  background-color: lightpink;
 }
 
 #int {
@@ -184,4 +226,50 @@ a {
 #float {
   color: aliceblue;
 }
+
+input {
+  height: 100%;
+  width: 100%;
+  padding: 2px;
+  border: none;
+  text-align: left;
+  flex: 1;
+}
+
+select {
+  height: 100%;
+  width: 100%;
+  padding: 2px;
+  border: none;
+  -moz-appearance: none;
+  -webkit-appearance: none;
+}
+
+table.dataframe {
+  border-collapse: collapse;
+  border: none;
+}
+table.dataframe tr {
+  border: none;
+  display: flex;
+}
+
+table.dataframe tr:nth-child(odd) input {
+  background-color: ghostwhite;
+}
+
+table.dataframe td {
+  margin: 0;
+  width: 80px;
+  height: 30px;
+}
+
+table.dataframe td.removeButtonCell {
+  border: 10px;
+}
+
+table.dataframe tr:nth-child(odd) td.columnNameCell {
+  border-bottom: 10px;
+}
+
 </style>
