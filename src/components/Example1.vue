@@ -1,5 +1,8 @@
 <template>
-  <df></df>
+  <div>
+    Example 1
+  </div>
+
 </template>
 
 <script>
